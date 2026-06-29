@@ -1,21 +1,27 @@
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Toaster } from 'react-hot-toast';
-import { type ReactNode } from 'react';
-import { AuthProvider, useAuth } from './lib/auth';
-import { useTheme } from './lib/useTheme';
-import { AppShell } from './components/AppShell';
-import { LoginPage } from './pages/LoginPage';
-import { RegisterPage } from './pages/RegisterPage';
-import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
-import { OnboardingPage } from './pages/OnboardingPage';
-import { DashboardPage } from './pages/DashboardPage';
-import { ContractPage } from './pages/ContractPage';
-import { TimerPage } from './pages/TimerPage';
-import { AnalyticsPage } from './pages/AnalyticsPage';
-import { PartnerPage } from './pages/PartnerPage';
-import { AchievementsPage } from './pages/AchievementsPage';
-import { SettingsPage } from './pages/SettingsPage';
+import {
+  HashRouter,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "react-hot-toast";
+import { type ReactNode } from "react";
+import { AuthProvider, useAuth } from "./lib/auth";
+import { useTheme } from "./lib/useTheme";
+import { AppShell } from "./components/AppShell";
+import { LoginPage } from "./pages/LoginPage";
+import { RegisterPage } from "./pages/RegisterPage";
+import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
+import { OnboardingPage } from "./pages/OnboardingPage";
+import { DashboardPage } from "./pages/DashboardPage";
+import { ContractPage } from "./pages/ContractPage";
+import { TimerPage } from "./pages/TimerPage";
+import { AnalyticsPage } from "./pages/AnalyticsPage";
+import { PartnerPage } from "./pages/PartnerPage";
+import { AchievementsPage } from "./pages/AchievementsPage";
+import { SettingsPage } from "./pages/SettingsPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -39,7 +45,11 @@ function ProtectedRoute({ children }: { children: ReactNode }) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  if (profile && !profile.onboarding_complete && !location.pathname.startsWith('/onboarding')) {
+  if (
+    profile &&
+    !profile.onboarding_complete &&
+    !location.pathname.startsWith("/onboarding")
+  ) {
     return <Navigate to="/onboarding" replace />;
   }
 
@@ -59,10 +69,23 @@ function AppRoutes() {
 
   return (
     <Routes>
-      <Route path="/login" element={user ? <Navigate to="/app" replace /> : <LoginPage />} />
-      <Route path="/register" element={user ? <Navigate to="/app" replace /> : <RegisterPage />} />
+      <Route
+        path="/login"
+        element={user ? <Navigate to="/app" replace /> : <LoginPage />}
+      />
+      <Route
+        path="/register"
+        element={user ? <Navigate to="/app" replace /> : <RegisterPage />}
+      />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-      <Route path="/onboarding" element={<ProtectedRoute><OnboardingPage /></ProtectedRoute>} />
+      <Route
+        path="/onboarding"
+        element={
+          <ProtectedRoute>
+            <OnboardingPage />
+          </ProtectedRoute>
+        }
+      />
       <Route
         path="/app"
         element={
@@ -133,8 +156,14 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
-      <Route path="/" element={<Navigate to={user ? '/app' : '/login'} replace />} />
-      <Route path="*" element={<Navigate to={user ? '/app' : '/login'} replace />} />
+      <Route
+        path="/"
+        element={<Navigate to={user ? "/app" : "/login"} replace />}
+      />
+      <Route
+        path="*"
+        element={<Navigate to={user ? "/app" : "/login"} replace />}
+      />
     </Routes>
   );
 }
@@ -145,21 +174,21 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <BrowserRouter>
+        <HashRouter>
           <AppRoutes />
           <Toaster
             position="top-center"
             toastOptions={{
               style: {
-                background: 'var(--card)',
-                color: 'var(--text)',
-                border: '1px solid var(--border)',
-                borderRadius: '12px',
-                fontSize: '14px',
+                background: "var(--card)",
+                color: "var(--text)",
+                border: "1px solid var(--border)",
+                borderRadius: "12px",
+                fontSize: "14px",
               },
             }}
           />
-        </BrowserRouter>
+        </HashRouter>
       </AuthProvider>
     </QueryClientProvider>
   );
